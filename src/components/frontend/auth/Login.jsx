@@ -28,8 +28,13 @@ const Login = () => {
         if (res.data.status === 200) {
           localStorage.setItem("auth_token", res.data.token);
           localStorage.setItem("auth_user", res.data.username);
+          localStorage.setItem("role", res.data.role);
           swal("Success", res.data.message, "success");
-          navigate("/");
+          if (res.data.role === "admin") {
+            navigate("/admin/dashboard");
+          } else {
+            navigate("/");
+          }
         } else if (res.data.status === 401) {
           swal("warning", res.data.message, "warning");
         } else {

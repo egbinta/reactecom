@@ -1,12 +1,12 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 const Navbar = () => {
   const token = localStorage.getItem("auth_token");
   const navigate = useNavigate();
-  const [authenticated, setAuthenticated] = useState(true);
+  const role = localStorage.getItem("role");
   useEffect(() => {
     axios
       .get(`/api/checkingAuthenticated`, {
@@ -14,7 +14,10 @@ const Navbar = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log("resss", res);
+          if (role === "") {
+            swal("Unauthorized", "You are Unauthorized ", "warning");
+            navigate("/");
+          }
         }
       })
       .catch((err) => {
@@ -23,7 +26,7 @@ const Navbar = () => {
           navigate("/");
         }
       });
-  }, []);
+  });
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <a className="navbar-brand ps-3" to="/admin">

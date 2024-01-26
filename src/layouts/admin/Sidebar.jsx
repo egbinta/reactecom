@@ -13,6 +13,12 @@ const Sidebar = () => {
             </div>
             Dashboard
           </Link>
+          <Link className="nav-link" to="/category">
+            <div className="sb-nav-link-icon">
+              <i className="fas fa-tachometer-alt"></i>
+            </div>
+            Add Category
+          </Link>
           <Link className="nav-link" to="/testpage">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>

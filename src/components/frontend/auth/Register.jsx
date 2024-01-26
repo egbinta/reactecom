@@ -32,6 +32,7 @@ const Register = () => {
         if (res.data.status === 200) {
           localStorage.setItem("auth_token", res.data.token);
           localStorage.setItem("auth_user", res.data.username);
+          localStorage.setItem("role", res.data.role);
           swal("Success", res.data.message, "success");
           navigate("/");
         } else {
