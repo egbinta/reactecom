@@ -40,9 +40,9 @@ function App() {
 
       <Route path="/" element={<Home />} />
 
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/testpage" element={<Testpage />} />
-      <Route path="/category" element={<Category />} />
+      <Route path="/admin/dashboard" element={<Dashboard />} />
+      <Route path="/admin/profile" element={<Testpage />} />
+      <Route path="/admin/category" element={<Category />} />
     </Routes>
   );
 }

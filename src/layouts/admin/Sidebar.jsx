@@ -7,19 +7,19 @@ const Sidebar = () => {
       <div className="sb-sidenav-menu">
         <div className="nav">
           <div className="sb-sidenav-menu-heading">Core</div>
-          <Link className="nav-link" to="/dashboard">
+          <Link className="nav-link" to="/admin/dashboard">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
             Dashboard
           </Link>
-          <Link className="nav-link" to="/category">
+          <Link className="nav-link" to="/admin/category">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
             Add Category
           </Link>
-          <Link className="nav-link" to="/testpage">
+          <Link className="nav-link" to="/admin/profile">
             <div className="sb-nav-link-icon">
               <i className="fas fa-tachometer-alt"></i>
             </div>
