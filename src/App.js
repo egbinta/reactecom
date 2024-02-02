@@ -7,7 +7,8 @@ import Home from "./components/frontend/Home.jsx";
 import Register from "./components/frontend/auth/Register.jsx";
 import Login from "./components/frontend/auth/Login.jsx";
 import axios from "axios";
-import Category from "./pages/Category.jsx";
+import Category from "./pages/category/Category.jsx";
+import ViewCategory from "./pages/category/ViewCategory.jsx";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -42,7 +43,8 @@ function App() {
 
       <Route path="/admin/dashboard" element={<Dashboard />} />
       <Route path="/admin/profile" element={<Testpage />} />
-      <Route path="/admin/category" element={<Category />} />
+      <Route path="/admin/category/category" element={<Category />} />
+      <Route path="/admin/category/view-category" element={<ViewCategory />} />
     </Routes>
   );
 }
