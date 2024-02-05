@@ -9,6 +9,7 @@ import Login from "./components/frontend/auth/Login.jsx";
 import axios from "axios";
 import Category from "./pages/category/Category.jsx";
 import ViewCategory from "./pages/category/ViewCategory.jsx";
+import EditCategory from "./pages/category/EditCategory.jsx";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -45,6 +46,10 @@ function App() {
       <Route path="/admin/profile" element={<Testpage />} />
       <Route path="/admin/category/category" element={<Category />} />
       <Route path="/admin/category/view-category" element={<ViewCategory />} />
+      <Route
+        path="/admin/category/edit-category/:id"
+        element={<EditCategory />}
+      />
     </Routes>
   );
 }

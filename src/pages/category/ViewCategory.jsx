@@ -28,7 +28,7 @@ const ViewCategory = () => {
         <td>{item.status}</td>
         <td>
           <Link
-            to={`edit-category/${item.id}`}
+            to={`/admin/category/edit-category/${item.id}`}
             className="btn btn-success btn-sm"
           >
             Edit

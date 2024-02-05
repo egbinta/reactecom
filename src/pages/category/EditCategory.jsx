@@ -1,21 +1,27 @@
-import React, { useState } from "react";
-import Navbar from "../../layouts/admin/Navbar.js";
-import Footer from "../../layouts/admin/Footer.jsx";
+import React, { useEffect, useState } from "react";
+import Navbar from "../../layouts/admin/Navbar.jsx";
 import Sidebar from "../../layouts/admin/Sidebar.jsx";
+import Footer from "../../layouts/admin/Footer.jsx";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 
-const Category = () => {
-  const [categoryInput, setCategoryInput] = useState({
-    slug: "",
-    name: "",
-    description: "",
-    status: "",
-    meta_title: "",
-    meta_keyword: "",
-    meta_description: "",
-    error_list: [],
-  });
+const EditCategory = () => {
+  const [categoryInput, setCategoryInput] = useState([]);
+  const navigate = useNavigate();
+  const param = useParams();
+  const category_id = param.id;
+
+  useEffect(() => {
+    axios.get(`/api/edit-category/${category_id}`).then((res) => {
+      if (res.status === 200) {
+        setCategoryInput(res.data.category);
+      } else if (res.status === 404) {
+        swal("Error", res.data.message, "error");
+        navigate("/admin/category/view-category");
+      }
+    });
+  }, [category_id, navigate]);
 
   const handleInput = (e) => {
     e.persist();
@@ -24,6 +30,7 @@ const Category = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    document.getElementById("updateBtn").innerHTML = "updating...";
     const data = {
       slug: categoryInput.slug,
       name: categoryInput.name,
@@ -33,20 +40,14 @@ const Category = () => {
       meta_keyword: categoryInput.meta_keyword,
       meta_description: categoryInput.meta_description,
     };
-
-    axios.post(`/api/store-category`, data).then((res) => {
-      if (res.data.status === 200) {
-        swal("success", res.data.message, "success");
-        document.getElementById("form_data").reset();
-      } else if (res.data.status === 400) {
-        setCategoryInput({
-          ...categoryInput,
-          error_list: res.data.validation_errors,
-        });
+    axios.put(`/api/update-category/${category_id}`, data).then((res) => {
+      if (res.status === 200) {
+        swal("Success", res.data.message, "success");
+        navigate("/admin/category/view-category");
+      } else if (res.status === 404) {
       }
     });
   };
-
   return (
     <div className="sb-nav-fixed">
       <Navbar />
@@ -58,7 +59,15 @@ const Category = () => {
         <div id="layoutSidenav_content">
           <main>
             <div className="container-fluid px-4">
-              <h3 className="mt-4">Add Category</h3>
+              <div className="d-flex align-items-center justify-content-between mt-4">
+                <h3 className="mt-4">Edit Category</h3>
+                <Link
+                  to="/admin/category/view-category"
+                  className="btn btn-primary btn-sm px-5"
+                >
+                  Back
+                </Link>
+              </div>
               <div className="card card-body">
                 <form onSubmit={handleSubmit} id="form_data">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -198,11 +207,15 @@ const Category = () => {
                     </div>
                     <hr />
                     <div className="form-group">
-                      <input
+                      <button className="btn btn-primary" id="updateBtn">
+                        Update
+                      </button>
+                      {/* <input
                         type="submit"
-                        value="Submit"
+                        value="Update"
                         className="btn btn-primary"
-                      />
+                        id="updateBtn"
+                      /> */}
                     </div>
                   </div>
                 </form>
@@ -216,4 +229,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default EditCategory;

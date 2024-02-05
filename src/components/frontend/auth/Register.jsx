@@ -20,7 +20,7 @@ const Register = () => {
 
   const registerSubmit = (e) => {
     e.preventDefault();
-
+    document.getElementById("regBtn").innerHTML = "Processing...";
     const data = {
       name: formData.name,
       email: formData.email,
@@ -37,6 +37,7 @@ const Register = () => {
           navigate("/");
         } else {
           setFormData({ ...formData, error_list: res.data.validation_errors });
+          document.getElementById("regBtn").innerHTML = "Register";
         }
       });
     });
@@ -96,7 +97,7 @@ const Register = () => {
                 </div>
 
                 <div className="form-group mt-3">
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary" id="regBtn">
                     Register
                   </button>
                 </div>

@@ -17,6 +17,7 @@ const Login = () => {
   };
 
   const handleSubmit = (e) => {
+    document.getElementById("loginBtn").innerHTML = "Processing...";
     e.preventDefault();
     const data = {
       email: loginData.email,
@@ -42,6 +43,7 @@ const Login = () => {
             ...loginData,
             error_list: res.data.validation_errors,
           });
+          document.getElementById("loginBtn").innerHTML = "Login";
         }
       });
     });
@@ -87,7 +89,11 @@ const Login = () => {
                 </div>
 
                 <div className="form-group mt-3">
-                  <button type="submit" className="btn btn-primary">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    id="loginBtn"
+                  >
                     Login
                   </button>
                 </div>
