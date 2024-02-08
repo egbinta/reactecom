@@ -4,6 +4,7 @@ import Footer from "../../layouts/admin/Footer.jsx";
 import Sidebar from "../../layouts/admin/Sidebar.jsx";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import swal from "sweetalert";
 
 const ViewCategory = () => {
   const [loading, setLoading] = useState(true);
@@ -16,6 +17,20 @@ const ViewCategory = () => {
       setLoading(false);
     });
   }, []);
+
+  const handleDelete = (e, id) => {
+    e.preventDefault();
+    const deleteBtn = e.currentTarget;
+    deleteBtn.innerText = "deleteing...";
+    axios.delete(`/api/delete-category/${id}`).then((res) => {
+      if (res.status === 200) {
+        swal("Success", res.data.message, "success");
+        deleteBtn.closest("tr").remove();
+      } else if (res.status === 404) {
+        swal("Warning", res.data.message, "warning");
+      }
+    });
+  };
 
   let category_data = "";
 
@@ -36,7 +51,7 @@ const ViewCategory = () => {
         </td>
         <td>
           <Link
-            to={`edit-category/${item.id}`}
+            onClick={(e) => handleDelete(e, item.id)}
             className="btn btn-danger btn-sm"
           >
             Delete

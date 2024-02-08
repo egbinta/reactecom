@@ -36,30 +36,30 @@ const Sidebar = () => {
             className="nav-link collapsed"
             to="#"
             data-bs-toggle="collapse"
-            data-bs-target="#collapseLayouts"
+            data-bs-target="#collapseProduct"
             aria-expanded="false"
-            aria-controls="collapseLayouts"
+            aria-controls="collapseProduct"
           >
             <div className="sb-nav-link-icon">
               <i className="fas fa-columns"></i>
             </div>
-            Layouts
+            Products
             <div className="sb-sidenav-collapse-arrow">
               <i className="fas fa-angle-down"></i>
             </div>
           </Link>
           <div
             className="collapse"
-            id="collapseLayouts"
+            id="collapseProduct"
             aria-labelledby="headingOne"
             data-bs-parent="#sidenavAccordion"
           >
             <nav className="sb-sidenav-menu-nested nav">
-              <Link className="nav-link" to="layout-static.html">
-                Static Navigation
+              <Link className="nav-link" to="/admin/product/add-product">
+                Add Product
               </Link>
-              <Link className="nav-link" to="layout-sidenav-light.html">
-                Light Sidenav
+              <Link className="nav-link" to="/admin/product/view-product">
+                View Product
               </Link>
             </nav>
           </div>

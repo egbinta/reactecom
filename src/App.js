@@ -10,6 +10,8 @@ import axios from "axios";
 import Category from "./pages/category/Category.jsx";
 import ViewCategory from "./pages/category/ViewCategory.jsx";
 import EditCategory from "./pages/category/EditCategory.jsx";
+import AddProduct from "./pages/products/AddProduct.jsx";
+import ViewProduct from "./pages/products/ViewProduct.jsx";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -50,6 +52,8 @@ function App() {
         path="/admin/category/edit-category/:id"
         element={<EditCategory />}
       />
+      <Route path="/admin/product/add-product" element={<AddProduct />} />
+      <Route path="/admin/product/view-product" element={<ViewProduct />} />
     </Routes>
   );
 }
