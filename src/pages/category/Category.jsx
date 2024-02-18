@@ -37,7 +37,15 @@ const Category = () => {
     axios.post(`/api/store-category`, data).then((res) => {
       if (res.data.status === 200) {
         swal("success", res.data.message, "success");
-        document.getElementById("form_data").reset();
+        setCategoryInput({
+          slug: "",
+          name: "",
+          description: "",
+          status: "",
+          meta_title: "",
+          meta_keyword: "",
+          meta_description: "",
+        });
       } else if (res.data.status === 400) {
         setCategoryInput({
           ...categoryInput,

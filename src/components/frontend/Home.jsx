@@ -1,5 +1,6 @@
-import React from 'react'
-import Navbar from '../../layouts/frontend/Navbar'
+import React, { useState } from "react";
+import Navbar from "../../layouts/frontend/Navbar";
+import axios from "axios";
 
 const Home = () => {
   return (
@@ -7,7 +8,7 @@ const Home = () => {
       <Navbar />
       <h1>This is the home page</h1>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

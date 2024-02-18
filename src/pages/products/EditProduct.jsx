@@ -2,47 +2,49 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../layouts/admin/Navbar.js";
 import Footer from "../../layouts/admin/Footer.jsx";
 import Sidebar from "../../layouts/admin/Sidebar.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 
-const AddProduct = () => {
-  const [productInput, setProduct] = useState({
-    category_id: "",
-    slug: "",
-    name: "",
-    description: "",
-    meta_title: "",
-    meta_keyword: "",
-    meta_description: "",
-    selling_price: "",
-    original_price: "",
-    quantity: "",
-    brand: "",
-    featured: "",
-    popular: "",
-    status: "",
-  });
-
+const EditProduct = () => {
+  const [productInput, setProductInput] = useState([]);
   const [picture, setPicture] = useState(null);
   const [category, setCategory] = useState([]);
-  const [error, setError] = useState([]);
+  const navigate = useNavigate();
+  const param = useParams();
+  const productId = param.proId;
+
+  useEffect(() => {
+    axios.get(`/api/edit-product/${productId}`).then((res) => {
+      if (res.data.status === 200) {
+        setProductInput(res.data.product);
+      } else if (res.data.status === 422) {
+        swal("Warning", res.data.message, "warning");
+        navigate("/admin/product/view-product");
+      }
+    });
+
+    axios.get(`/api/get-all-category`).then((res) => {
+      if (res.data.status === 200) {
+        setCategory(res.data.category);
+      } else if (res.data.status === 404) {
+        swal("Warning", res.data.message, "warning");
+      }
+    });
+  }, [productId]);
 
   const handleInput = (e) => {
-    e.preventDefault();
-    //e.persist();
-    setProduct({ ...productInput, [e.target.name]: e.target.value });
+    e.persist();
+    setProductInput({ ...productInput, [e.target.name]: e.target.value });
   };
 
   const handleImage = (e) => {
-    e.preventDefault();
     setPicture(e.target.files[0]);
   };
 
-  const handleProductForm = (e) => {
-    console.log("hf" + picture);
+  const handleproductForm = (e) => {
     e.preventDefault();
-    //document.getElementById("addProductBtn").innerHTML = "Add Product...";
+
     const formData = new FormData();
     formData.append("image", picture);
     formData.append("category_id", productInput.category_id);
@@ -61,51 +63,21 @@ const AddProduct = () => {
     formData.append("status", productInput.status);
 
     axios
-      .post(`api/add-product`, formData, {
+      .put(`/api/update-product/${productId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-        console.log("data", res.data.data);
         if (res.data.status === 200) {
-          swal("Success", res.data.message, "success");
-          setError([]);
-          setProduct({
-            category_id: "",
-            slug: "",
-            name: "",
-            description: "",
-            meta_title: "",
-            meta_keyword: "",
-            meta_description: "",
-            selling_price: "",
-            original_price: "",
-            quantity: "",
-            brand: "",
-            featured: "",
-            popular: "",
-            status: "",
-          });
-
-          setPicture(null);
-          document.getElementById("addProductBtn").innerHTML = "Add Product";
-        } else if (res.data.status === 422) {
-          setError(res.data.error);
-          document.getElementById("addProductBtn").innerHTML = "Add Product";
+          swal("SUCCESS", res.data.message, "success");
+          //navigate("/admin/product/view-product");
+        } else if (res.data.status === 404) {
+          swal("Warning", res.data.message, "warning");
+          navigate("/admin/product/view-product");
         }
       });
   };
-
-  useEffect(() => {
-    axios.get(`/api/get-all-category`).then((res) => {
-      if (res.data.status === 200) {
-        setCategory(res.data.category);
-      } else if (res.data.status === 404) {
-        swal("Warning", res.data.message, "warning");
-      }
-    });
-  }, []);
 
   return (
     <div className="sb-nav-fixed">
@@ -120,7 +92,7 @@ const AddProduct = () => {
             <div className="container mt-4">
               <div className="card">
                 <div className="card-header d-flex align-items-center justify-content-between">
-                  <h3>Add Product</h3>
+                  <h3>Edit Product</h3>
 
                   <Link
                     to="/admin/product/view-product"
@@ -131,7 +103,7 @@ const AddProduct = () => {
                 </div>
                 <div className="card-body">
                   <form
-                    onSubmit={handleProductForm}
+                    onSubmit={handleproductForm}
                     enctype="multipart/form-data"
                   >
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -205,9 +177,9 @@ const AddProduct = () => {
                                   </option>
                                 ))}
                               </select>
-                              <small className="text-danger">
+                              {/* <small className="text-danger">
                                 {error.category_id}
-                              </small>
+                              </small> */}
                             </div>
                           </div>
                         </div>
@@ -222,9 +194,9 @@ const AddProduct = () => {
                                 value={productInput.slug}
                                 className="form-control"
                               />
-                              <small className="text-danger">
+                              {/* <small className="text-danger">
                                 {error.slug}
-                              </small>
+                              </small> */}
                             </div>
                           </div>
                         </div>
@@ -239,9 +211,9 @@ const AddProduct = () => {
                                 value={productInput.name}
                                 className="form-control"
                               />
-                              <small className="text-danger">
+                              {/* <small className="text-danger">
                                 {error.name}
-                              </small>
+                              </small> */}
                             </div>
                           </div>
                         </div>
@@ -276,9 +248,9 @@ const AddProduct = () => {
                                 value={productInput.meta_title}
                                 className="form-control"
                               />
-                              <small className="text-danger">
+                              {/* <small className="text-danger">
                                 {error.meta_title}
-                              </small>
+                              </small> */}
                             </div>
                           </div>
                         </div>
@@ -354,9 +326,9 @@ const AddProduct = () => {
                                 className="form-control"
                               />
                             </div>
-                            <small className="text-danger">
+                            {/* <small className="text-danger">
                               {error.quantity}
-                            </small>
+                            </small> */}
                           </div>
                           <div className="col-md-6">
                             <div className="form-group">
@@ -368,9 +340,9 @@ const AddProduct = () => {
                                 value={productInput.brand}
                                 className="form-control"
                               />
-                              <small className="text-danger">
+                              {/* <small className="text-danger">
                                 {error.brand}
-                              </small>
+                              </small> */}
                             </div>
                           </div>
                         </div>
@@ -378,10 +350,15 @@ const AddProduct = () => {
                         <div className="row mb-2">
                           <div className="col-8">
                             <div className="form-group">
-                              <input type="file" onChange={handleImage} />
-                              <small className="text-danger">
+                              <label htmlFor="">Image</label>
+                              <input
+                                type="file"
+                                onChange={handleImage}
+                                className="form-control"
+                              />
+                              {/* <small className="text-danger">
                                 {error.image}
-                              </small>
+                              </small> */}
                             </div>
                           </div>
                         </div>
@@ -429,7 +406,7 @@ const AddProduct = () => {
                         className="btn btn-primary px-3"
                         id="addProductBtn"
                       >
-                        Add Product
+                        Update Product
                       </button>
                     </div>
                   </form>
@@ -444,4 +421,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;
