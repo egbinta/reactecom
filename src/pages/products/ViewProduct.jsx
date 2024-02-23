@@ -25,10 +25,17 @@ const ViewProduct = () => {
     return (
       <tr key={item.id}>
         <td>{item.id}</td>
-        <td>{item.category_id}</td>
+        <td>{item.category.name}</td>
         <td>{item.name}</td>
         <td>{item.selling_price}</td>
-        <td>{item.image}</td>
+        <td>
+          <img
+            src={`http://localhost:8000/${item.image}`}
+            width="50"
+            height="50"
+            alt={item.name}
+          />
+        </td>
         <td>
           <Link
             to={`/admin/product/edit-product/${item.id}`}

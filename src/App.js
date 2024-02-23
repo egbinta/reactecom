@@ -13,6 +13,7 @@ import EditCategory from "./pages/category/EditCategory.jsx";
 import AddProduct from "./pages/products/AddProduct.jsx";
 import ViewProduct from "./pages/products/ViewProduct.jsx";
 import EditProduct from "./pages/products/EditProduct.jsx";
+import AddProd from "./pages/testpro/AddProd.jsx";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -60,6 +61,7 @@ function App() {
         path="/admin/product/edit-product/:proId"
         element={<EditProduct />}
       />
+      <Route path="/admin/testpro/addProduct/" element={<AddProd />} />
     </Routes>
   );
 }

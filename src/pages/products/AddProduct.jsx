@@ -191,7 +191,6 @@ const AddProduct = () => {
                               <label htmlFor="">Select Category</label>
                               <select
                                 name="category_id"
-                                id=""
                                 onChange={handleInput}
                                 value={productInput.category_id}
                                 className="form-control"
