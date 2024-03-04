@@ -26,6 +26,7 @@ const AddProduct = () => {
 
   const [picture, setPicture] = useState(null);
   const [category, setCategory] = useState([]);
+  const [allcheckbox, setAllCheckbox] = useState([]);
   const [error, setError] = useState([]);
 
   const handleInput = (e) => {
@@ -37,6 +38,11 @@ const AddProduct = () => {
   const handleImage = (e) => {
     e.preventDefault();
     setPicture(e.target.files[0]);
+  };
+
+  const handleCheckbox = (e) => {
+    e.persist();
+    setAllCheckbox({ ...allcheckbox, [e.target.name]: e.target.checked });
   };
 
   const handleProductForm = (e) => {
@@ -56,9 +62,9 @@ const AddProduct = () => {
     formData.append("original_price", productInput.original_price);
     formData.append("quantity", productInput.quantity);
     formData.append("brand", productInput.brand);
-    formData.append("featured", productInput.featured);
-    formData.append("popular", productInput.popular);
-    formData.append("status", productInput.status);
+    formData.append("featured", allcheckbox.featured ? "1" : 0);
+    formData.append("popular", allcheckbox.popular ? "1" : 0);
+    formData.append("status", allcheckbox.status ? "1" : 0);
 
     axios
       .post(`api/add-product`, formData, {
@@ -391,8 +397,10 @@ const AddProduct = () => {
                               <input
                                 type="checkbox"
                                 name="featured"
-                                onChange={handleInput}
-                                value={productInput.featured}
+                                onChange={handleCheckbox}
+                                value={
+                                  allcheckbox.featured === 1 ? true : false
+                                }
                               />
                             </div>
                           </div>
@@ -402,8 +410,8 @@ const AddProduct = () => {
                               <input
                                 type="checkbox"
                                 name="popular"
-                                onChange={handleInput}
-                                value={productInput.popular}
+                                onChange={handleCheckbox}
+                                value={allcheckbox.popular === 1 ? true : false}
                               />
                             </div>
                           </div>
@@ -412,8 +420,10 @@ const AddProduct = () => {
                               <label htmlFor="">Status (Checked=Shown)</label>
                               <input
                                 type="checkbox"
-                                onChange={handleInput}
-                                value={productInput.status}
+                                onChange={handleCheckbox}
+                                defaultChecked={
+                                  allcheckbox.status === 1 ? true : false
+                                }
                                 name="status"
                               />
                             </div>

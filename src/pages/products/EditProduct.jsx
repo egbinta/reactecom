@@ -7,26 +7,11 @@ import axios from "axios";
 import swal from "sweetalert";
 
 const EditProduct = () => {
-  const [productInput, setProduct] = useState({
-    category_id: "",
-    slug: "",
-    name: "",
-    description: "",
-    meta_title: "",
-    meta_keyword: "",
-    meta_description: "",
-    selling_price: "",
-    original_price: "",
-    quantity: "",
-    brand: "",
-    featured: "",
-    popular: "",
-    status: "",
-  });
-
+  const [productInput, setProduct] = useState({});
   const [picture, setPicture] = useState(null);
   const [category, setCategory] = useState([]);
   const [error, setError] = useState([]);
+  const [allcheckbox, setAllCheckbox] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const param = useParams();
@@ -44,6 +29,7 @@ const EditProduct = () => {
     axios.get(`/api/edit-product/${productId}`).then((res) => {
       if (res.data.status === 200) {
         setProduct(res.data.product);
+        setAllCheckbox(res.data.product);
         setLoading(false);
       } else if (res.data.status === 404) {
         swal("Warning", res.data.message, "warning");
@@ -51,6 +37,7 @@ const EditProduct = () => {
       }
     });
   }, [productId, navigate]);
+  console.log(allcheckbox);
 
   const handleInput = (e) => {
     //e.preventDefault();
@@ -63,10 +50,16 @@ const EditProduct = () => {
     setPicture(e.target.files[0]);
   };
 
+  const handleCheckbox = (e) => {
+    e.persist();
+    setAllCheckbox({ ...allcheckbox, [e.target.name]: e.target.checked });
+  };
+
   const editProductForm = (e) => {
     e.preventDefault();
-    //document.getElementById("addProductBtn").innerHTML = "update Product...";
+    document.getElementById("addProductBtn").innerHTML = "update Product...";
     const formData = new FormData();
+    formData.append("_method", "put");
     formData.append("image", picture);
     formData.append("category_id", productInput.category_id);
     formData.append("slug", productInput.slug);
@@ -79,24 +72,23 @@ const EditProduct = () => {
     formData.append("original_price", productInput.original_price);
     formData.append("quantity", productInput.quantity);
     formData.append("brand", productInput.brand);
-    formData.append("featured", productInput.featured);
-    formData.append("popular", productInput.popular);
-    formData.append("status", productInput.status);
+    formData.append("featured", allcheckbox.featured ? "1" : 0);
+    formData.append("popular", allcheckbox.popular ? "1" : 0);
+    formData.append("status", allcheckbox.status ? "1" : 0);
 
     axios
-      .put(`api/update-product/${productId}`, formData, {
+      .post(`api/update-product/${productId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-        console.log("data", res.data.data);
         if (res.data.status === 200) {
           swal("Success", res.data.message, "success");
-          //document.getElementById("addProductBtn").innerHTML = "update Product";
+          document.getElementById("addProductBtn").innerHTML = "update Product";
         } else if (res.data.status === 422) {
           setError(res.data.error);
-          //document.getElementById("addProductBtn").innerHTML = "update Product";
+          document.getElementById("addProductBtn").innerHTML = "update Product";
         } else if (res.data.status === 404) {
           swal("Error", res.data.message, "error");
         }
@@ -392,8 +384,10 @@ const EditProduct = () => {
                                 <input
                                   type="checkbox"
                                   name="featured"
-                                  onChange={handleInput}
-                                  value={productInput.featured}
+                                  onChange={handleCheckbox}
+                                  value={
+                                    allcheckbox.featured === 1 ? true : false
+                                  }
                                 />
                               </div>
                             </div>
@@ -405,8 +399,10 @@ const EditProduct = () => {
                                 <input
                                   type="checkbox"
                                   name="popular"
-                                  onChange={handleInput}
-                                  value={productInput.popular}
+                                  onChange={handleCheckbox}
+                                  value={
+                                    allcheckbox.popular === 1 ? true : false
+                                  }
                                 />
                               </div>
                             </div>
@@ -415,8 +411,10 @@ const EditProduct = () => {
                                 <label htmlFor="">Status (Checked=Shown)</label>
                                 <input
                                   type="checkbox"
-                                  onChange={handleInput}
-                                  value={productInput.status}
+                                  onChange={handleCheckbox}
+                                  defaultChecked={
+                                    allcheckbox.status === 1 ? true : false
+                                  }
                                   name="status"
                                 />
                               </div>

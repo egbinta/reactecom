@@ -1,22 +1,33 @@
-import React, { useState } from "react";
+import axios from "axios";
 import Sidebar from "../../layouts/admin/Sidebar.jsx";
 import Footer from "../../layouts/admin/Footer.jsx";
 import Navbar from "../../layouts/admin/Navbar.jsx";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert";
 
-const AddProd = () => {
+const EditTeatpro = () => {
+  const [productInput, setProductInput] = useState({});
   const [image, setImage] = useState(null);
-  const [error, setError] = useState([]);
-  const [productInput, setProductIput] = useState({
-    proname: "",
-    proprice: "",
-    prodescription: "",
-  });
+  const [error, setError] = useState({});
+
+  const navigate = useNavigate();
+  const param = useParams();
+  const testproId = param.pid;
+
+  useEffect(() => {
+    axios.get(`/api/getProduct/${testproId}`).then((res) => {
+      if (res.data.status === 200) {
+        setProductInput(res.data.tetspro);
+      } else if (res.data.status === 404) {
+        swal("Warning", res.data.message, "warning");
+      }
+    });
+  }, [testproId]);
 
   const handleInput = (e) => {
     e.persist();
-    setProductIput({ ...productInput, [e.target.name]: e.target.value });
+    setProductInput({ ...productInput, [e.target.name]: e.target.value });
   };
 
   const handleImage = (e) => {
@@ -26,14 +37,17 @@ const AddProd = () => {
 
   const handleForm = (e) => {
     e.preventDefault();
+
     const formData = new FormData();
+
+    formData.append("_method", "put");
     formData.append("image", image);
     formData.append("proname", productInput.proname);
     formData.append("proprice", productInput.proprice);
     formData.append("prodescription", productInput.prodescription);
 
     axios
-      .post("api/test-product", formData, {
+      .post(`/api/update-testpro/${testproId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -41,14 +55,10 @@ const AddProd = () => {
       .then((res) => {
         if (res.data.status === 200) {
           swal("Success", res.data.message, "success");
-          setProductIput({
-            proname: "",
-            proprice: "",
-            prodescription: "",
-            image: "",
-          });
-        } else if (res.data.status === 422) {
-          setError(res.data.error);
+          navigate("/admin/testpro/viewProduct");
+        } else if ((res.data.status = 404)) {
+          swal("Warning", res.data.message, "warning");
+          navigate("/admin/testpro/viewProduct");
         }
       });
   };
@@ -76,7 +86,7 @@ const AddProd = () => {
                         type="text"
                         name="proname"
                         className="form-control"
-                        value={productInput.proname}
+                        value={productInput?.proname}
                         onChange={handleInput}
                       />
                       <small className="text-danger">{error.proname}</small>
@@ -87,7 +97,7 @@ const AddProd = () => {
                         type="text"
                         name="proprice"
                         className="form-control"
-                        value={productInput.proprice}
+                        value={productInput?.proprice}
                         onChange={handleInput}
                       />
                       <small className="text-danger">{error.proprice}</small>
@@ -98,7 +108,7 @@ const AddProd = () => {
                         type="text"
                         name="prodescription"
                         className="form-control"
-                        value={productInput.prodescription}
+                        value={productInput?.prodescription}
                         onChange={handleInput}
                       />
                       <small className="text-danger">
@@ -127,4 +137,4 @@ const AddProd = () => {
   );
 };
 
-export default AddProd;
+export default EditTeatpro;

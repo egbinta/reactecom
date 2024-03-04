@@ -38,6 +38,7 @@ const Login = () => {
           }
         } else if (res.data.status === 401) {
           swal("warning", res.data.message, "warning");
+          document.getElementById("loginBtn").innerHTML = "Login";
         } else {
           setLoginData({
             ...loginData,
@@ -56,7 +57,7 @@ const Login = () => {
         <div className="col-4 mt-5">
           <div className="card">
             <div className="card-header">
-              <h4>Register</h4>
+              <h4>Login</h4>
             </div>
             <div className="card-body">
               <form onSubmit={handleSubmit}>

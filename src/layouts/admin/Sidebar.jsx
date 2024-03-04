@@ -64,6 +64,9 @@ const Sidebar = () => {
               <Link className="nav-link" to="/admin/testpro/addProduct">
                 Test Product
               </Link>
+              <Link className="nav-link" to="/admin/testpro/viewProduct">
+                View test Product
+              </Link>
             </nav>
           </div>
           <Link

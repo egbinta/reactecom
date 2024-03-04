@@ -14,6 +14,8 @@ import AddProduct from "./pages/products/AddProduct.jsx";
 import ViewProduct from "./pages/products/ViewProduct.jsx";
 import EditProduct from "./pages/products/EditProduct.jsx";
 import AddProd from "./pages/testpro/AddProd.jsx";
+import ViewPro from "./pages/testpro/ViewPro.jsx";
+import EditTeatpro from "./pages/testpro/EditTeatpro.jsx";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -62,6 +64,8 @@ function App() {
         element={<EditProduct />}
       />
       <Route path="/admin/testpro/addProduct/" element={<AddProd />} />
+      <Route path="/admin/testpro/viewProduct" element={<ViewPro />} />
+      <Route path="/admin/testpro/editProduct/:pid" element={<EditTeatpro />} />
     </Routes>
   );
 }
