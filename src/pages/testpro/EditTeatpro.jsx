@@ -9,6 +9,7 @@ import swal from "sweetalert";
 const EditTeatpro = () => {
   const [productInput, setProductInput] = useState({});
   const [image, setImage] = useState(null);
+  const [checkbox, setCheckbox] = useState({});
   const [error, setError] = useState({});
 
   const navigate = useNavigate();
@@ -33,6 +34,11 @@ const EditTeatpro = () => {
   const handleImage = (e) => {
     e.preventDefault();
     setImage(e.target.files[0]);
+  };
+
+  const handleCkeckbox = (e) => {
+    e.persist();
+    //setCheckbox({...checkbox, []})
   };
 
   const handleForm = (e) => {
@@ -124,6 +130,27 @@ const EditTeatpro = () => {
                       />
                       <small className="text-danger">{error.image}</small>
                     </div>
+                    {/* <div className="form-group mb-2">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={handleCkeckbox}
+                        />
+                        Feature
+                      </label>
+                    </div>
+
+                    <div className="form-group mb-2">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={handleCkeckbox}
+                        />
+                      </label>
+                      Status
+                    </div> */}
                     <button className="btn btn-primary">Submit</button>
                   </form>
                 </div>

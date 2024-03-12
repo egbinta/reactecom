@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
   const handleLogout = (e) => {
-    document.getElementById("logoutBtn").innerHTML = "Loging out";
+    document.getElementById("logoutBtn").innerHTML = "Loging out...";
     e.preventDefault();
     axios.post(`api/logout`).then((res) => {
       console.log("testing");

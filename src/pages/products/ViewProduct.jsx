@@ -21,7 +21,13 @@ const ViewProduct = () => {
     });
   }, []);
   let productData = "";
+  let productStatus = "";
   productData = products.map((item) => {
+    if (item.status === "0") {
+      productStatus = "Shown";
+    } else if (item.status === "1") {
+      productStatus = "Hidden";
+    }
     return (
       <tr key={item.id}>
         <td>{item.id}</td>
@@ -44,14 +50,7 @@ const ViewProduct = () => {
             Edit
           </Link>
         </td>
-        <td>
-          <Link
-            //onClick={(e) => handleDelete(e, item.id)}
-            className="btn btn-danger btn-sm"
-          >
-            Delete
-          </Link>
-        </td>
+        <td>{productStatus}</td>
       </tr>
     );
   });
@@ -86,7 +85,7 @@ const ViewProduct = () => {
                         <th>Selling Price</th>
                         <th>Image</th>
                         <th>Edit</th>
-                        <th>Delete</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>

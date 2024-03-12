@@ -38,6 +38,7 @@ const Login = () => {
           }
         } else if (res.data.status === 401) {
           swal("warning", res.data.message, "warning");
+          //navigate("/");
           document.getElementById("loginBtn").innerHTML = "Login";
         } else {
           setLoginData({

@@ -11,7 +11,7 @@ const EditProduct = () => {
   const [picture, setPicture] = useState(null);
   const [category, setCategory] = useState([]);
   const [error, setError] = useState([]);
-  const [allcheckbox, setAllCheckbox] = useState([]);
+  const [allcheckbox, setAllCheckbox] = useState({});
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const param = useParams();
@@ -37,10 +37,8 @@ const EditProduct = () => {
       }
     });
   }, [productId, navigate]);
-  console.log(allcheckbox);
 
   const handleInput = (e) => {
-    //e.preventDefault();
     e.persist();
     setProduct({ ...productInput, [e.target.name]: e.target.value });
   };
@@ -86,6 +84,7 @@ const EditProduct = () => {
         if (res.data.status === 200) {
           swal("Success", res.data.message, "success");
           document.getElementById("addProductBtn").innerHTML = "update Product";
+          navigate("/admin/product/view-product");
         } else if (res.data.status === 422) {
           setError(res.data.error);
           document.getElementById("addProductBtn").innerHTML = "update Product";
@@ -369,6 +368,12 @@ const EditProduct = () => {
                             <div className="col-8">
                               <div className="form-group">
                                 <input type="file" onChange={handleImage} />
+                                <img
+                                  src={`http://127.0.0.1:8000/${productInput.image}`}
+                                  width="50"
+                                  height="50"
+                                  alt=""
+                                />
                                 <small className="text-danger">
                                   {error.image}
                                 </small>
@@ -379,44 +384,46 @@ const EditProduct = () => {
                             <div className="col-md-4">
                               <div className="form-group">
                                 <label htmlFor="">
+                                  <input
+                                    type="checkbox"
+                                    name="featured"
+                                    onChange={handleCheckbox}
+                                    checked={
+                                      allcheckbox.featured === 1 ? true : false
+                                    }
+                                  />
                                   Feature (Checked=Shown)
                                 </label>
-                                <input
-                                  type="checkbox"
-                                  name="featured"
-                                  onChange={handleCheckbox}
-                                  value={
-                                    allcheckbox.featured === 1 ? true : false
-                                  }
-                                />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="form-group">
-                                <label htmlFor="">
+                                <label>
+                                  <input
+                                    type="checkbox"
+                                    name="popular"
+                                    onChange={handleCheckbox}
+                                    checked={
+                                      allcheckbox.popular === 1 ? true : false
+                                    }
+                                  />
                                   Popular (Checked=Shown)
                                 </label>
-                                <input
-                                  type="checkbox"
-                                  name="popular"
-                                  onChange={handleCheckbox}
-                                  value={
-                                    allcheckbox.popular === 1 ? true : false
-                                  }
-                                />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="form-group">
-                                <label htmlFor="">Status (Checked=Shown)</label>
-                                <input
-                                  type="checkbox"
-                                  onChange={handleCheckbox}
-                                  defaultChecked={
-                                    allcheckbox.status === 1 ? true : false
-                                  }
-                                  name="status"
-                                />
+                                <label>
+                                  <input
+                                    type="checkbox"
+                                    onChange={handleCheckbox}
+                                    checked={
+                                      allcheckbox.status === 1 ? true : false
+                                    }
+                                    name="status"
+                                  />
+                                  Status (Checked=Shown)
+                                </label>
                               </div>
                             </div>
                           </div>

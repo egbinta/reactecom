@@ -7,6 +7,7 @@ import swal from "sweetalert";
 
 const AddProd = () => {
   const [image, setImage] = useState(null);
+  const [checked, setChecked] = useState({});
   const [error, setError] = useState([]);
   const [productInput, setProductIput] = useState({
     proname: "",
@@ -19,6 +20,11 @@ const AddProd = () => {
     setProductIput({ ...productInput, [e.target.name]: e.target.value });
   };
 
+  const handleCkeckbox = (e) => {
+    e.persist();
+    setChecked(...checked, [e.target.name], e.target.checked);
+  };
+
   const handleImage = (e) => {
     e.preventDefault();
     setImage(e.target.files[0]);
@@ -26,6 +32,7 @@ const AddProd = () => {
 
   const handleForm = (e) => {
     e.preventDefault();
+    console.log(checked);
     const formData = new FormData();
     formData.append("image", image);
     formData.append("proname", productInput.proname);
@@ -113,6 +120,27 @@ const AddProd = () => {
                         onChange={handleImage}
                       />
                       <small className="text-danger">{error.image}</small>
+                    </div>
+                    <div className="form-group mb-2">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={checked.feature}
+                          onChange={handleCkeckbox}
+                        />
+                        Feature
+                      </label>
+                    </div>
+
+                    <div className="form-group mb-2">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={checked.status}
+                          onChange={handleCkeckbox}
+                        />
+                      </label>
+                      Status
                     </div>
                     <button className="btn btn-primary">Submit</button>
                   </form>
