@@ -13,6 +13,7 @@ const EditProduct = () => {
   const [error, setError] = useState([]);
   const [allcheckbox, setAllCheckbox] = useState({});
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
   const param = useParams();
   const productId = param.proId;
