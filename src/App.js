@@ -18,6 +18,7 @@ import ViewPro from "./pages/testpro/ViewPro.jsx";
 import EditTeatpro from "./pages/testpro/EditTeatpro.jsx";
 import ProductCard from "./components/frontend/ProductCard.jsx";
 import FrontView from "./pages/productView/FrontView.jsx";
+import ViewDetails from "./pages/productView/ViewDetails.jsx";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -35,6 +36,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/collection" element={<FrontView />} />
       <Route path="/category/:productId" element={<ProductCard />} />
+      <Route path="/product-details/:productId" element={<ViewDetails />} />
 
       {localStorage.getItem("auth_token") ? (
         <Route path="*" element={<Navigate to="/" replace />} />
